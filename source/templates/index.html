@@ -1,0 +1,66 @@
+<head>
+<script src="http://yandex.st/jquery/2.1.0/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $('.article-content').each(function(i, article) {
+                var el = $(article);
+                $('.keywords-input').val().replace(',', ' ').split(' ').forEach(function(val) {
+                    el.html(el.html().replace(val, '<span class="highlight">$&</span>')) });
+                });
+
+        });
+    </script>
+<style>
+    .highlight
+    {
+        background-color: #ff0;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+background: #e8f2e8; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2U4ZjJlOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQwJSIgc3RvcC1jb2xvcj0iI2RmZTVkNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNiM2JlYWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #e8f2e8 0%, #dfe5d7 40%, #b3bead 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8f2e8), color-stop(40%,#dfe5d7), color-stop(100%,#b3bead)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #e8f2e8 0%,#dfe5d7 40%,#b3bead 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #e8f2e8 0%,#dfe5d7 40%,#b3bead 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #e8f2e8 0%,#dfe5d7 40%,#b3bead 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #e8f2e8 0%,#dfe5d7 40%,#b3bead 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8f2e8', endColorstr='#b3bead',GradientType=0 ); /* IE6-8 */
+
+    }
+    .content {
+        background: white;
+        width: 900px;
+        margin: 0 auto;
+        padding: 20px 50px;
+        border-left: #eee 1px solid;
+        border-right: #eee 1px solid;
+    }
+    .keywords-input
+    {
+        width: 100%;
+    }
+    .article {
+        border-bottom: #ccc 1px solid;
+        padding-bottom: 25px;
+    }
+    .link-holder {
+        margin: 25px 0;
+    }
+</style>
+</head>
+<body>
+<div class="content">
+    <form action="/parse/" method="POST"><input class="keywords-input" name="keywords" type="text" value="{{ keywords }}">{{ csrf_token }}</form>
+    {% if article %}
+        {% for a in article %}
+            <div class="article">
+                <div class="link-holder"><a href="{{ a.url }}">{{ a.url }}</a></div>
+                <div class="article-content">{{ a.article }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+</body>
