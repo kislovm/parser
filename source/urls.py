@@ -12,4 +12,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^parse/$', 'lingvo.views.main', name='main'),
+    url(r'^dictionaries/$', 'lingvo.views.dictionaries', name='dictionaries'),
+    url(r'^dictionary/(?P<id>\d+)/$', 'lingvo.views.dictionary', name='dictionary'),
 )

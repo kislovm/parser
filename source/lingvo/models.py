@@ -9,3 +9,8 @@ class article(models.Model):
         mode='SPH_MATCH_ANY',
         rankmode='SPH_RANK_NONE',
     )
+
+class Dictonary(models.Model):
+    dict = models.TextField()
+    name = models.CharField(max_length=100)
+

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}Словари{% endblock %}
+
+{% block content %}
+    <p>
+        <a href="/dictonary/">Добавить словарь</a>
+    </p>
+    {% if dicts %}
+        {% for d in dicts %}
+            <div class="article">
+                <div class="link-holder"><a href="/dictonary/{{ d.id }}/">{{ d.name }}</a></div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
