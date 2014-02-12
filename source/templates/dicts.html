@@ -4,12 +4,12 @@
 
 {% block content %}
     <p>
-        <a href="/dictonary/">Добавить словарь</a>
+        <a href="/dictionary/">Добавить словарь</a>
     </p>
     {% if dicts %}
         {% for d in dicts %}
             <div class="article">
-                <div class="link-holder"><a href="/dictonary/{{ d.id }}/">{{ d.name }}</a></div>
+                <div class="link-holder"><a href="/dictionary/{{ d.id }}/">{{ d.name }}</a></div>
             </div>
         {% endfor %}
     {% endif %}

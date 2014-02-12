@@ -1,6 +1,6 @@
 #coding: utf-8
 from django.shortcuts import render_to_response, get_object_or_404
-from lingvo.models import article
+from models import article
 from django.views.decorators.csrf import csrf_exempt
 from source.lingvo.models import Dictonary
 
@@ -21,7 +21,7 @@ def dictionaries(request):
 
 
 @csrf_exempt
-def dictonary(request, id=False):
+def dictionary(request, id=False):
     """
     TODO add forms and validation
     """
