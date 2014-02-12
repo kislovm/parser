@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}Топ статей{% endblock %}
+
+{% block content %}
+    <p>
+        <a href="/dictionaries/">Словари</a>
+    </p>
+    {% if articles %}
+        {% for a in articles %}
+            <div class="article">
+                <div class="link-holder">
+                    <a href="{{ a.article.url }}">{{ a.article.url }}</a>
+                    <span>({{ a.sum }} вхождений из словаря)</span>
+                </div>
+                <div class="article-content">{{ a.article.article }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

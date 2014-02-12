@@ -1,4 +1,8 @@
 #coding: utf-8
+from collections import defaultdict
+from operator import itemgetter
+import nltk
+import re
 from django.shortcuts import render_to_response, get_object_or_404
 from models import article
 from django.views.decorators.csrf import csrf_exempt
@@ -31,7 +35,7 @@ def dictionary(request, id=False):
         else:
             dict = Dictonary()
         dict.name = request.POST['name']
-        dict.dict = request.POST['dict']
+        dict.dict = " ".join(set(prepeare_words(request.POST['dict']).split()))
         dict.save()
     else:
         if id:
@@ -41,3 +45,28 @@ def dictionary(request, id=False):
     return render_to_response('dict.html',{'dict':dict})
 
 
+def dicttop(request, id=False):
+    dict = get_object_or_404(Dictonary, pk=id)
+    dict_words = dict.dict.split()
+    articles = article.objects.all()
+    arts = []
+    for a in articles:
+        arts.append({"article":a,"sum":get_count(a, dict_words)})
+    arts = sorted(arts, key=itemgetter('sum'),reverse=True)
+    return render_to_response('dicttop.html', {"articles":arts[0:10]})
+
+
+def prepeare_words(text):
+    text = re.sub('[,!.;:\'?\-"]', ' ', text)
+    words = nltk.word_tokenize(text.lower())
+    lmtzr = nltk.stem.wordnet.WordNetLemmatizer()
+    words = [lmtzr.lemmatize(w) for w in words]
+    return " ".join(words)
+
+
+def get_count(a, dict_words):
+    words = prepeare_words(a.article).split()
+    summ = 0
+    for w in dict_words:
+        summ += words.count(w)
+    return summ

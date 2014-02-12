@@ -9,7 +9,10 @@
     {% if dicts %}
         {% for d in dicts %}
             <div class="article">
-                <div class="link-holder"><a href="/dictionary/{{ d.id }}/">{{ d.name }}</a></div>
+                <div class="link-holder">
+                    <a href="/dictionary/{{ d.id }}/" title="посмотреть/редактировать словарь">{{ d.name }}</a>
+                    <a href="/dicttop/{{ d.id }}/" title="топ статей по этом словарю">Топ</a>
+                </div>
             </div>
         {% endfor %}
     {% endif %}
