@@ -6,7 +6,7 @@ from lxml.html import fromstring
 import sqlalchemy
 from sqlalchemy import Column, Integer, String
 
-engine = sqlalchemy.create_engine("mysql://root@localhost/parser")
+engine = sqlalchemy.create_engine("mysql://parser:AFG*(#GN-12gf@localhost/parser")
 
 def getArticles(url):
     articles = []
