@@ -1,11 +1,12 @@
 #coding: utf-8
-from collections import defaultdict
+import json
 from operator import itemgetter
 import nltk
 import re
 from django.shortcuts import render_to_response, get_object_or_404
 from models import article
 from django.views.decorators.csrf import csrf_exempt
+from source.lingvo import lmtzr
 from source.lingvo.models import Dictonary
 
 
@@ -35,7 +36,7 @@ def dictionary(request, id=False):
         else:
             dict = Dictonary()
         dict.name = request.POST['name']
-        dict.dict = " ".join(set(prepeare_words(request.POST['dict']).split()))
+        dict.dict = " ".join(set(prepeare_words(request.POST['dict'])))
         dict.save()
     else:
         if id:
@@ -49,24 +50,17 @@ def dicttop(request, id=False):
     dict = get_object_or_404(Dictonary, pk=id)
     dict_words = dict.dict.split()
     articles = article.objects.all()
-    arts = []
-    for a in articles:
-        arts.append({"article":a,"sum":get_count(a, dict_words)})
+    arts = [{"article":a,"sum":get_count(a, dict_words)} for a in articles]
     arts = sorted(arts, key=itemgetter('sum'),reverse=True)
-    return render_to_response('dicttop.html', {"articles":arts[0:10]})
+    return render_to_response('dicttop.html', {"articles":arts[0:10],'dict':json.dumps(dict_words)})
 
 
 def prepeare_words(text):
     text = re.sub('[,!.;:\'?\-"]', ' ', text)
     words = nltk.word_tokenize(text.lower())
-    lmtzr = nltk.stem.wordnet.WordNetLemmatizer()
-    words = [lmtzr.lemmatize(w) for w in words]
-    return " ".join(words)
+    return [lmtzr.lemmatize(w, 'v') for w in words]
 
 
 def get_count(a, dict_words):
-    words = prepeare_words(a.article).split()
-    summ = 0
-    for w in dict_words:
-        summ += words.count(w)
-    return summ
+    words = prepeare_words(a.article)
+    return sum([words.count(w) for w in dict_words])

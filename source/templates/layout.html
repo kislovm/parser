@@ -1,15 +1,5 @@
 <head>
 <script src="http://yandex.st/jquery/2.1.0/jquery.min.js"></script>
-    <script>
-        $(function() {
-            $('.article-content').each(function(i, article) {
-                var el = $(article);
-                $('.keywords-input').val().replace(',', ' ').split(' ').forEach(function(val) {
-                    el.html(el.html().replace(val, '<span class="highlight">$&</span>')) });
-                });
-
-        });
-    </script>
 <style>
     .highlight
     {

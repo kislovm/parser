@@ -17,4 +17,17 @@
             </div>
         {% endfor %}
     {% endif %}
+    {% if dict %}
+        <script>
+        var dict = {{ dict|safe }}
+          $(function() {
+            $('.article-content').each(function(i, article) {
+                var el = $(article);
+                dict.forEach(function(val) {
+                    el.html(el.html().replace(" " + val + " ", '<span class="highlight">$&</span>')) });
+                });
+
+        });
+        </script>
+    {% endif %}
 {% endblock %}
