@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block title %}Топ статей{% endblock %}
+
+{% block content %}
+    <p>
+        <a href="/dictionaries/">Словари</a>
+    </p>
+    <p>
+    <h4>Сортировки:</h4>
+    {% for dir in sort_directions %}
+        <a href="?dir={{ dir }}" {% if dir == sort_direction %} class="active"{% endif %}>{{ dir }}</a>
+    {% endfor %}
+    </p>
+    {% if articles %}
+        {% for a in articles %}
+            <div class="article">
+                <div class="link-holder">
+                    <a href="{{ a.article.url }}">{{ a.article.url }}</a><br/>
+                    {% for k,v in a.items %}
+                        {% if k in sort_directions %}
+                        <p>{{ k }}: {{ v }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="article-content">{{ a.article.article }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if dict %}
+        <script>
+            var dict = {{ dict|safe }};
+            String.prototype.replaceAll = function (token, newToken, ignoreCase) {
+                var _token;
+                var str = this + "";
+                var i = -1;
+
+                if (typeof token === "string") {
+
+                    if (ignoreCase) {
+
+                        _token = token.toLowerCase();
+
+                        while ((
+                                i = str.toLowerCase().indexOf(
+                                        token, i >= 0 ? i + newToken.length : 0
+                                ) ) !== -1
+                                ) {
+                            str = str.substring(0, i) +
+                                    newToken +
+                                    str.substring(i + token.length);
+                        }
+
+                    } else {
+                        return this.split(token).join(newToken);
+                    }
+
+                }
+                return str;
+            };
+            $(function () {
+                $('.article-content').each(function (i, article) {
+                    var el = $(article);
+                    dict.forEach(function (val) {
+                        el.html(el.html().replaceAll(" " + val + " ", '<span class="highlight"> '+val+' </span>'))
+                    });
+                });
+
+            });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Словарь{% endblock %}
+
+{% block content %}
+    <p>
+    <a href="/dictionaries/">Список словарей</a>
+    </p>
+    <h1>{% if dict %}Редактирование{% else %}Добавление{% endif %} словаря</h1>
+    <form action="/dictionary/{% if dict %}{{ dict.id }}/{% endif %}" method="POST">
+    <div>
+        <input name="name" type="text" value="{% if dict %}{{ dict.name }}{% endif %}" placeholder="название словаря">
+    </div>
+    <div>
+        <textarea name="dict" placeholder="слова разделенные пробелом">{% if dict %}{{ dict.dict }}{% endif %}</textarea>
+    </div>
+    <div>
+        <input type="submit" name="submit" value="сохранить">
+    </div>
+        {{ csrf_token }}
+    </form>
+{% endblock %}

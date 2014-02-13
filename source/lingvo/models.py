@@ -10,3 +10,7 @@ class article(models.Model):
         rankmode= 'SPH_RANK_NONE',
         weights= { 'article': 100 }
     )
+
+class Dictonary(models.Model):
+    dict = models.TextField()
+    name = models.CharField(max_length=100)

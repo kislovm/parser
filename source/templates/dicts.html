@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}Словари{% endblock %}
+
+{% block content %}
+    <p>
+        <a href="/dictionary/">Добавить словарь</a>
+    </p>
+    {% if dicts %}
+        {% for d in dicts %}
+            <div class="article">
+                <div class="link-holder">
+                    <a href="/dictionary/{{ d.id }}/" title="посмотреть/редактировать словарь">{{ d.name }}</a>
+                    <a href="/dicttop/{{ d.id }}/" title="топ статей по этом словарю">Топ</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

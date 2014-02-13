@@ -57,15 +57,15 @@ WSGI_APPLICATION = 'source.wsgi.application'
 
 DATABASE_ENGINE = 'mysql'
 
-DATABASE_HOST = 'localhost'
+DATABASE_HOST = '127.0.0.1'
 
 DATABASE_PORT = '3306'
 
 DATABASE_NAME = 'parser'
 
-DATABASE_USER = 'parser'
+DATABASE_USER = 'root'
 
-DATABASE_PASSWORD = 'password'
+DATABASE_PASSWORD = ''
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -74,8 +74,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'parser',
-        'USER': 'parser',
-        'PASSWORD': 'password'
+        'USER': 'root',
+        'PASSWORD': ''
     }
 }
 
