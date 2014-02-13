@@ -6,12 +6,22 @@
     <p>
         <a href="/dictionaries/">Словари</a>
     </p>
+    <p>
+    <h4>Сортировки:</h4>
+    {% for dir in sort_directions %}
+        <a href="?dir={{ dir }}" {% if dir == sort_direction %} class="active"{% endif %}>{{ dir }}</a>
+    {% endfor %}
+    </p>
     {% if articles %}
         {% for a in articles %}
             <div class="article">
                 <div class="link-holder">
-                    <a href="{{ a.article.url }}">{{ a.article.url }}</a>
-                    <span>({{ a.sum }} вхождений из словаря)</span>
+                    <a href="{{ a.article.url }}">{{ a.article.url }}</a><br/>
+                    {% for k,v in a.items %}
+                        {% if k in sort_directions %}
+                        <p>{{ k }}: {{ v }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="article-content">{{ a.article.article }}</div>
             </div>

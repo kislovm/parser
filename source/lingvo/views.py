@@ -1,8 +1,9 @@
 #coding: utf-8
+from collections import Counter
 import json
 from operator import itemgetter
 import nltk
-import re
+
 from django.shortcuts import render_to_response, get_object_or_404
 from models import article
 from django.views.decorators.csrf import csrf_exempt
@@ -43,24 +44,48 @@ def dictionary(request, id=False):
             dict = get_object_or_404(Dictonary, pk=id)
         else:
             dict = False
-    return render_to_response('dict.html',{'dict':dict})
+    return render_to_response('dict.html', {'dict': dict})
 
 
 def dicttop(request, id=False):
+    sort_directions = ["sum_all", "len_all", "len_unique", "sum_unique", 'relation_all','relation_unique']
+    sort_direction = request.GET.get('dir',"sum_all")
+    if sort_direction not in sort_directions:
+        sort_direction = "sum_all"
     dict = get_object_or_404(Dictonary, pk=id)
     dict_words = dict.dict.split()
     articles = article.objects.all()
-    arts = [{"article":a,"sum":get_count(a, dict_words)} for a in articles]
-    arts = sorted(arts, key=itemgetter('sum'),reverse=True)
-    return render_to_response('dicttop.html', {"articles":arts[0:10],'dict':json.dumps(dict_words)})
+    arts = sorted([get_count(a, dict_words) for a in articles], key=itemgetter(sort_direction), reverse=True)
+    return render_to_response(
+        'dicttop.html',
+        {
+            'articles': arts[0:10],
+            'dict': json.dumps(dict_words),
+            'sort_direction': sort_direction,
+            'sort_directions': sort_directions
+        }
+    )
 
 
 def prepeare_words(text):
-    text = re.sub('[,!.;:\'?\-"]', ' ', text)
-    words = nltk.word_tokenize(text.lower())
+    tikenizer = nltk.RegexpTokenizer(r'\w+')
+    words = tikenizer.tokenize(text.lower())
     return [lmtzr.lemmatize(w, 'v') for w in words]
 
 
 def get_count(a, dict_words):
     words = prepeare_words(a.article)
-    return sum([words.count(w) for w in dict_words])
+    unque_words = set(words)
+    sum_all = sum([words.count(w) for w in dict_words])
+    len_all = len(words)
+    len_unique = len(unque_words)
+    sum_unique = len_unique - len(unque_words - set(dict_words))
+    return {
+        "article": a,
+        "sum_all": sum_all,
+        "len_all": len_all,
+        "len_unique": len_unique,
+        "sum_unique": sum_unique,
+        'relation_all': float(sum_all) / float(len_all),
+        'relation_unique': float(sum_unique) / float(len_unique)
+    }
