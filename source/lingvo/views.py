@@ -8,7 +8,12 @@ from django.views.decorators.csrf import csrf_exempt
 def main(request):
     if 'keywords' in request.POST:
         keywords = request.POST['keywords']
-        a = article.search.query(keywords)
+        a = article.search.query(keywords).set_options(passages=True, passages_opts={
+            'before_match': "<span class='highlight'>",
+            'after_match': '</span>',
+            'chunk_separator': ' ... ',
+            'around': 1000000000
+         })
     else:
         keywords = ''
         a = None
