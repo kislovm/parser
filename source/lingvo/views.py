@@ -66,13 +66,11 @@ def dicttop(request, id=False):
         }
     )
 
-
 def prepeare_words(text):
     tikenizer = nltk.RegexpTokenizer(r'\w+')
     words = tikenizer.tokenize(text.lower())
     return [lmtzr.lemmatize(w, 'v') for w in words]
 
-@cache_function(200)
 def get_count(a, dict_words):
     words = prepeare_words(a.article)
     unque_words = set(words)
