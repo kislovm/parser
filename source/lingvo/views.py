@@ -7,7 +7,7 @@ import nltk
 from django.shortcuts import render_to_response, get_object_or_404
 from models import article
 from django.views.decorators.csrf import csrf_exempt
-from source.lingvo import lmtzr
+from source.lingvo import lmtzr, cache_function
 from source.lingvo.models import Dictonary
 
 
@@ -72,7 +72,7 @@ def prepeare_words(text):
     words = tikenizer.tokenize(text.lower())
     return [lmtzr.lemmatize(w, 'v') for w in words]
 
-
+@cache_function(200)
 def get_count(a, dict_words):
     words = prepeare_words(a.article)
     unque_words = set(words)
